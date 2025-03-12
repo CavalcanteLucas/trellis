@@ -29,7 +29,8 @@ export default {
     },
     async getNumToEnglish() {
       try {
-        let response = await axios.get("http://localhost:8000/num_to_english", {
+        let url = import.meta.env.VITE_API_ENDPOINT;
+        let response = await axios.get(url, {
           params: { number: this.inputNumber },
         });
         this.responseStatus = response.data.status;
@@ -45,11 +46,11 @@ export default {
       this.responseStatus = "";
       this.responseMessage = "";
       setTimeout(async () => {
+        let url = import.meta.env.VITE_API_ENDPOINT;
         try {
-          let response = await axios.post(
-            "http://localhost:8000/num_to_english",
-            { number: String(this.inputNumber) },
-          );
+          let response = await axios.post(url, {
+            number: String(this.inputNumber),
+          });
           this.responseStatus = response.data.status;
           this.responseMessage = response.data.num_in_english;
         } catch (error) {
@@ -58,7 +59,7 @@ export default {
             error.response.data.message || "Error fetching data";
         }
         this.responseIsLoading = false;
-      }, 500);
+      }, 5000);
     },
   },
 };

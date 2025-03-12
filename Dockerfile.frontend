@@ -2,10 +2,11 @@ FROM node:23-bookworm-slim AS build
 WORKDIR /app
 COPY ./frontend/package*.json ./
 RUN npm install
-COPY ./frontend .
+COPY ./frontend ./
+COPY ./.env ./
 RUN npm run build
 
-FROM nginx AS prod
-RUN mkdir /app
-COPY --from=build /app/dist /app
+FROM nginx:latest AS prod
+COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.frontend.conf /etc/nginx/nginx.conf
+
